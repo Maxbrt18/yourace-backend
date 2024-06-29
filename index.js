@@ -1,27 +1,16 @@
-const cors = require('cors');
 const express = require("express");
-let store = require("app-store-scraper");
-const https = require('https');
-const fs = require('fs');
-
-
-// This line is from the Node.js HTTPS documentation.
-const options = {
-    key: fs.readFileSync('/etc/letsencrypt/live/teslamate.rbart.xyz/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/teslamate.rbart.xyz/fullchain.pem')
-};
-
-
-store = require("app-store-scraper");
-
+const cors = require('cors');
+const store = require("app-store-scraper");
 
 const app = express();
 
+// Use CORS middleware to allow all origins
 app.use(cors({
     origin: '*'
 }));
 
-https.createServer(options, app).listen(5000);
+// Listen on the port specified by the PORT environment variable
+const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
     store.app({ id: 1572073081 }).then((data) => {
@@ -35,13 +24,21 @@ app.get("/", (req, res) => {
                 res.json({
                     version: data.version,
                     releaseNotes: data.releaseNotes,
-                    reviews: reviews.map((review) => {
-                        if (review.score === 5 && review.title.length <= 22 && review.version[0] >= 3) {
-                            return review;
-                        }
-                    }),
+                    reviews: reviews
+                        .filter(review => review.score === 5 && review.title.length <= 22 && review.version[0] >= 3)
+                        .map(review => ({
+                            title: review.title,
+                            text: review.text,
+                            rating: review.score,
+                            version: review.version,
+                        })),
                 });
             })
             .catch(console.log);
     });
+});
+
+// Listen for HTTP requests on 0.0.0.0:${PORT}
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server is listening on port ${PORT}`);
 });
