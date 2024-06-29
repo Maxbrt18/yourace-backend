@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
                     version: data.version,
                     releaseNotes: data.releaseNotes,
                     reviews: reviews
-                        .filter(review => review.score === 5 && review.title.length <= 22 && review.version[0] >= 3)
+                        .filter(review => review.score >= 4 && review.title.length <= 22 && review.version[0] >= 3)
                         .map(review => ({
                             title: review.title,
                             text: review.text,
