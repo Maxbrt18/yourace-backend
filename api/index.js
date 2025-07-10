@@ -4,13 +4,9 @@ const store = require("app-store-scraper");
 
 const app = express();
 
-// Use CORS middleware to allow all origins
 app.use(cors({
     origin: '*'
 }));
-
-// Listen on the port specified by the PORT environment variable
-const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
     store.app({ id: 1572073081 }).then((data) => {
@@ -38,7 +34,5 @@ app.get("/", (req, res) => {
     });
 });
 
-// Listen for HTTP requests on 0.0.0.0:${PORT}
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server is listening on port ${PORT}`);
-});
+// Exporter l'app pour Vercel
+module.exports = app;
