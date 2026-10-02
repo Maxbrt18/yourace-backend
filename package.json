@@ -2,19 +2,20 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "api/index.js",
   "scripts": {
     "build": "echo \"No build step necessary\"",
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node api/index.js",
+    "test": "node api/test.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "app-store-scraper": "^0.17.0",
+    "@upstash/redis": "^1.35.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "link-preview-generator": "^1.0.7",
-    "link-preview-js": "^2.1.13"
+    "express": "^5.1.0"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

@@ -1,16 +1,8 @@
-let store = require("app-store-scraper");
+const app = require("./index");
 
-store = require("app-store-scraper");
-
-store.app({ id: 1572073081 }).then((data) => {
-        store
-            .reviews({
-                id: "1572073081",
-                country: "fr",
-                sort: store.sort.HELPFUL,
-            })
-            .then((reviews) => {
-                console.log(reviews)
-            })
-            .catch(console.log);
-    });
+const server = app.listen(0, async () => {
+    const response = await fetch(`http://localhost:${server.address().port}/`);
+    console.log(response.status, response.headers.get("cache-control"));
+    console.log(JSON.stringify(await response.json(), null, 2));
+    server.close();
+});
